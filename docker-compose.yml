@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+  horde:
+    ports:
+      - '8080:8080'
+      - '9742:9742'
+    build:
+      context: .
+      dockerfile: Dockerfile
