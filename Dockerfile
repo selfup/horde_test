@@ -1,7 +1,20 @@
-FROM alpine:latest
+FROM golang:alpine AS build
 
-WORKDIR /opt
+RUN apk add git
 
-ADD main /opt/bin/main
+ENV GO111MODULE=on CGO_ENABLED=0
 
-CMD ["/opt/bin/main"]
+COPY . $GOPATH/src/github.com/selfup/horde_test
+
+WORKDIR $GOPATH/src/github.com/selfup/horde_test
+
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod download && go build -o /go/bin/horde_test
+
+FROM scratch
+
+COPY --from=build /go/bin/horde_test /go/bin/horde_test
+
+CMD ["/go/bin/horde_test"]
