@@ -13,6 +13,7 @@ func main() {
 
 	ping := manager.Ping()
 
+	// right now responds with pang
 	fmt.Println(ping)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
