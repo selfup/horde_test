@@ -8,9 +8,6 @@ COPY . $GOPATH/src/github.com/selfup/horde_test
 
 WORKDIR $GOPATH/src/github.com/selfup/horde_test
 
-COPY go.mod .
-COPY go.sum .
-
 RUN go mod download && go build -o /go/bin/horde_test
 
 FROM scratch
