@@ -1,10 +1,27 @@
 version: '3.1'
 
 services:
-  horde:
+  lb:
+    image: "jwilder/nginx-proxy"
     ports:
-      - '8080:8080'
-      - '9742:9742'
+      - "8080:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  known:
+    depends_on:
+      - lb
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - VIRTUAL_HOST=localhost
+  unknown:
+    depends_on:
+      - known
+    links:
+      - known
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - VIRTUAL_HOST=localhost
